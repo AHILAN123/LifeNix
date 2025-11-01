@@ -1,3 +1,58 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-image",
+      "description": "A compassionate doctor listening to a patient.",
+      "imageUrl": "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxkb2N0b3IlMjBwYXRpZW50fGVufDB8fHx8MTc2MTg5MTM3OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "doctor patient"
+    },
+    {
+      "id": "symptom-checker",
+      "description": "Person using a laptop for health check.",
+      "imageUrl": "https://images.unsplash.com/photo-1599470753165-40b764715bfe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxsYXB0b3AlMjBoZWFsdGh8ZW58MHx8fHwxNzYyMDEwMDQ5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "laptop health"
+    },
+    {
+      "id": "find-doctor",
+      "description": "A diverse group of doctors.",
+      "imageUrl": "https://images.unsplash.com/photo-1581593439252-8b7702abc867?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxkb2N0b3JzJTIwZ3JvdXB8ZW58MHx8fHwxNzYyMDEwMDQ5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "doctors group"
+    },
+    {
+      "id": "medical-vault",
+      "description": "Secure digital files.",
+      "imageUrl": "https://images.unsplash.com/photo-1756821232059-c6800de45b36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxzZWN1cmUlMjBmaWxlc3xlbnwwfHx8fDE3NjE5MTQ0MTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "secure files"
+    },
+    {
+      "id": "medicine-delivery",
+      "description": "Online pharmacy concept.",
+      "imageUrl": "https://images.unsplash.com/photo-1671108503276-1d3d5ab23a3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxvbmxpbmUlMjBwaGFybWFjeXxlbnwwfHx8fDE3NjIwMTAwNTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "online pharmacy"
+    },
+    {
+      "id": "ambulance-booking",
+      "description": "An ambulance speeding on a city street.",
+      "imageUrl": "https://images.unsplash.com/photo-1656952945490-2e5db43d1445?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxhbWJ1bGFuY2UlMjBjaXR5fGVufDB8fHx8MTc2MjAxMDA1MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "ambulance city"
+    },
+    {
+      "id": "testimonial-1",
+      "description": "A smiling person.",
+      "imageUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzbWlsaW5nJTIwcGVyc29ufGVufDB8fHx8MTc2MTkyODg5NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "smiling person"
+    },
+    {
+      "id": "testimonial-2",
+      "description": "A smiling person.",
+      "imageUrl": "https://images.unsplash.com/photo-1631377307475-9acfa929b062?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxzbWlsaW5nJTIwcGVyc29ufGVufDB8fHx8MTc2MTkyODg5NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "smiling person"
+    },
+    {
+      "id": "testimonial-3",
+      "description": "A smiling person.",
+      "imageUrl": "https://images.unsplash.com/photo-1527980965255-d3b416303d12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzbWlsaW5nJTIwcGVyc29ufGVufDB8fHx8MTc2MTkyODg5NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "smiling person"
+    }
+  ]
 }
