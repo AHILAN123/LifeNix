@@ -8,12 +8,12 @@ import { Input } from '@/components/ui/input';
 import { Pill, Search, ShoppingCart, Upload } from 'lucide-react';
 
 const medicines = [
-  { id: 1, name: 'Paracetamol 500mg', price: 5.99, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },
-  { id: 2, name: 'Ibuprofen 200mg', price: 7.49, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },
-  { id: 3, name: 'Amoxicillin 250mg', price: 12.00, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },
-  { id: 4, name: 'Cetirizine 10mg', price: 9.99, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },
-  { id: 5, name: 'Lisinopril 10mg', price: 15.50, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },
-  { id: 6, name: 'Metformin 500mg', price: 11.25, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },
+  { id: 1, name: 'Paracetamol 500mg', price: 150, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },
+  { id: 2, name: 'Ibuprofen 200mg', price: 250, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },
+  { id: 3, name: 'Amoxicillin 250mg', price: 400, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },
+  { id: 4, name: 'Cetirizine 10mg', price: 80, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },
+  { id: 5, name: 'Lisinopril 10mg', price: 320, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },
+  { id: 6, name: 'Metformin 500mg', price: 180, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },
 ];
 const medicineImage = PlaceHolderImages.find(p => p.id === 'medicine-delivery');
 
@@ -51,7 +51,7 @@ export default function MedicineDeliveryPage() {
                     </div>
                     <div className="p-4 space-y-2">
                         <h3 className="font-semibold text-sm truncate">{med.name}</h3>
-                        <p className="font-bold text-lg">${med.price.toFixed(2)}</p>
+                        <p className="font-bold text-lg">₹{med.price.toFixed(2)}</p>
                         <Button className="w-full" variant="secondary">Add to Cart</Button>
                     </div>
                 </CardContent>

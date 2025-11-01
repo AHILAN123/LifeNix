@@ -11,12 +11,54 @@ import { useEffect, useState } from 'react';
 import { Label } from '@/components/ui/label';
 
 const MapPlaceholder = () => (
-  <div className="h-[400px] lg:h-full w-full bg-muted flex items-center justify-center rounded-lg border">
-    <div className="text-center text-muted-foreground">
-      <MapPin className="h-16 w-16 mx-auto" />
-      <p>Real-time map would be displayed here.</p>
+    <div className="relative h-[400px] lg:h-full w-full bg-muted rounded-lg border overflow-hidden">
+      <svg
+        className="absolute inset-0 w-full h-full text-muted-foreground/10"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M5 12h14" />
+        <path d="M12 5v14" />
+      </svg>
+       <div className="absolute inset-0 flex items-center justify-center">
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 200 200"
+          className="opacity-60"
+        >
+          <path
+            d="M 30 170 C 50 50, 150 150, 170 30"
+            stroke="hsl(var(--primary))"
+            strokeWidth="2"
+            fill="none"
+            strokeDasharray="4"
+            className="animate-[dash_20s_linear_infinite] [stroke-dashoffset:0;]"
+            style={{animation: 'dash 20s linear infinite'}}
+          />
+          <style>
+            {`@keyframes dash { to { stroke-dashoffset: -1000; } }`}
+          </style>
+          <circle cx="30" cy="170" r="4" fill="hsl(var(--primary))" />
+          <circle cx="170" cy="30" r="4" fill="hsl(var(--destructive))" />
+        </svg>
+      </div>
+      <div className="absolute top-4 left-4 bg-background/80 p-2 rounded-md text-xs">
+        <p className="font-bold">From:</p>
+        <p>123 MG Road, Bangalore</p>
+      </div>
+       <div className="absolute bottom-4 right-4 bg-background/80 p-2 rounded-md text-xs">
+        <p className="font-bold">To:</p>
+        <p>Apollo Hospital, Jayanagar</p>
+      </div>
     </div>
-  </div>
 );
 
 export default function AmbulancePage() {
@@ -55,7 +97,7 @@ export default function AmbulancePage() {
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="location">Your Location</Label>
-                                <Input id="location" placeholder="Enter your current address" defaultValue="123 Main St, Anytown, USA" />
+                                <Input id="location" placeholder="Enter your current address" defaultValue="123 MG Road, Bangalore" />
                             </div>
                             <Button size="lg" className="w-full" onClick={handleBooking}>Request Now</Button>
                         </CardContent>
@@ -84,10 +126,10 @@ export default function AmbulancePage() {
                             <div className="flex items-center gap-4">
                                 <Avatar className="h-16 w-16">
                                     {driverImage && <AvatarImage src={driverImage.imageUrl} data-ai-hint="driver portrait"/>}
-                                    <AvatarFallback>JD</AvatarFallback>
+                                    <AvatarFallback>RG</AvatarFallback>
                                 </Avatar>
                                 <div>
-                                    <p className="font-bold text-lg">John Doe</p>
+                                    <p className="font-bold text-lg">Rajesh Kumar</p>
                                     <p className="text-sm text-muted-foreground">Ambulance Driver</p>
                                     <div className="flex items-center gap-1 text-sm">
                                         <Star className="h-4 w-4 text-yellow-400 fill-yellow-400"/> 4.8
@@ -95,7 +137,7 @@ export default function AmbulancePage() {
                                 </div>
                             </div>
                             <div className="mt-4 border-t pt-4 space-y-2">
-                                <p className="font-semibold">Vehicle: <span className="font-normal text-muted-foreground">Ambulance - AB 123 CD</span></p>
+                                <p className="font-semibold">Vehicle: <span className="font-normal text-muted-foreground">Ambulance - KA 01 AB 1234</span></p>
                                 <div className="flex justify-between items-center">
                                     <Button variant="outline"><Phone className="mr-2 h-4 w-4"/> Call Driver</Button>
                                     <Button variant="ghost" className="text-destructive hover:text-destructive">Cancel Ride</Button>

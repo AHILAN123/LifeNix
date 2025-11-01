@@ -13,30 +13,30 @@ import { Label } from '@/components/ui/label';
 const doctors = [
   {
     id: '1',
-    name: 'Dr. Evelyn Reed',
+    name: 'Dr. Priya Sharma',
     specialty: 'Cardiologist',
-    location: 'New York, NY',
+    location: 'Mumbai, MH',
     image: PlaceHolderImages.find(p => p.id === 'testimonial-1'),
   },
   {
     id: '2',
-    name: 'Dr. Samuel Chen',
+    name: 'Dr. Rohan Gupta',
     specialty: 'Dermatologist',
-    location: 'San Francisco, CA',
+    location: 'Delhi, DL',
     image: PlaceHolderImages.find(p => p.id === 'testimonial-2'),
   },
   {
     id: '3',
-    name: 'Dr. Maria Garcia',
+    name: 'Dr. Ananya Reddy',
     specialty: 'Pediatrician',
-    location: 'Chicago, IL',
+    location: 'Bangalore, KA',
     image: PlaceHolderImages.find(p => p.id === 'testimonial-3'),
   },
   {
     id: '4',
-    name: 'Dr. Ben Carter',
+    name: 'Dr. Vikram Singh',
     specialty: 'Neurologist',
-    location: 'Austin, TX',
+    location: 'Chennai, TN',
     image: PlaceHolderImages.find(p => p.id === 'find-doctor'),
   },
 ];
@@ -60,7 +60,7 @@ export default function DoctorsPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="location">Location</Label>
-              <Input id="location" placeholder="e.g., New York" />
+              <Input id="location" placeholder="e.g., Mumbai" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="availability">Availability</Label>

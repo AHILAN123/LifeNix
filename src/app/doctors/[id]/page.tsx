@@ -15,14 +15,14 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
   // In a real app, you'd fetch doctor data based on params.id
   const doctor = {
     id: params.id,
-    name: 'Dr. Evelyn Reed',
+    name: 'Dr. Priya Sharma',
     specialty: 'Cardiologist',
-    location: 'New York, NY',
-    bio: 'Dr. Evelyn Reed is a board-certified cardiologist with over 15 years of experience in treating cardiovascular diseases. She is dedicated to providing compassionate and comprehensive care to her patients.',
+    location: 'Mumbai, MH',
+    bio: 'Dr. Priya Sharma is a board-certified cardiologist with over 15 years of experience in treating cardiovascular diseases. She is dedicated to providing compassionate and comprehensive care to her patients.',
     rating: 4.9,
     reviews: 124,
-    education: 'MD from Stanford University School of Medicine',
-    experience: 'Chief of Cardiology at NY General Hospital',
+    education: 'MD from All India Institute of Medical Sciences, Delhi',
+    experience: 'Chief of Cardiology at Apollo Hospital, Mumbai',
   };
 
   return (

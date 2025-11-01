@@ -48,19 +48,19 @@ const featureCards = [
 
 const testimonials = [
   {
-    name: 'Sarah J.',
+    name: 'Priya S.',
     role: 'Patient',
     text: 'LifeNix made it so easy to find a specialist for my condition. The booking process was seamless!',
     image: PlaceHolderImages.find(p => p.id === 'testimonial-1'),
   },
   {
-    name: 'Dr. Mark R.',
+    name: 'Dr. Rajesh K.',
     role: 'Cardiologist',
     text: 'The platform helps me manage my appointments efficiently and connect with my patients better.',
     image: PlaceHolderImages.find(p => p.id === 'testimonial-2'),
   },
   {
-    name: 'David L.',
+    name: 'Amit L.',
     role: 'Patient',
     text: 'The AI symptom checker gave me a good idea of what to do next. It was very reassuring.',
     image: PlaceHolderImages.find(p => p.id === 'testimonial-3'),
