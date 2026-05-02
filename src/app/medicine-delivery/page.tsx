@@ -1,12 +1,11 @@
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import {Header } from '@/components/layout/Header';
+import {Footer } from '@/components/layout/Footer';
+import {Button } from '@/components/ui/button';
+import {Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Input } from '@/components/ui/input';
-import { Pill, Search, ShoppingCart, Upload } from 'lucide-react';
-
+import {PlaceHolderImages } from '@/lib/placeholder-images';
+import {Input } from '@/components/ui/input';
+import {Pill, Search, ShoppingCart, Upload } from 'lucide-react';
 const medicines = [
   { id: 1, name: 'Paracetamol 500mg', price: 150, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },
   { id: 2, name: 'Ibuprofen 200mg', price: 250, image: PlaceHolderImages.find(p => p.id === 'medicine-delivery') },

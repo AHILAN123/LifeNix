@@ -1,78 +1,61 @@
-// Symptom analysis flow to provide preliminary analysis and recommend doctor specialties.
+import { z } from "zod";
+import { defineFlow, definePrompt } from "@genkit-ai/ai";
 
-'use server';
-
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-
-const SymptomAnalysisInputSchema = z.object({
-  symptoms: z.string().describe('The symptoms described by the patient.'),
-});
-
-export type SymptomAnalysisInput = z.infer<typeof SymptomAnalysisInputSchema>;
+const SymptomAnalysisInputSchema = z.object({ symptoms: z.string().min(3) });
 
 const SymptomAnalysisOutputSchema = z.object({
-  analysis: z.string().describe('The AI analysis of the symptoms.'),
-  potentialConditions: z.string().describe('Potential medical conditions based on the symptoms.'),
-  recommendedSpecialties: z.string().describe('Recommended doctor specialties to consult.'),
-  riskAssessment: z.string().describe('An assessment of the risk level associated with the symptoms.')
+  summary: z.string(),
+  possibleConditions: z.array(z.object({ name: z.string(), probability: z.number().min(0).max(1) })),
+  urgency: z.enum(["low","medium","high"]),
+  riskScore: z.number().min(0).max(100),
+  recommendation: z.string()
 });
 
-export type SymptomAnalysisOutput = z.infer<typeof SymptomAnalysisOutputSchema>;
+const symptomPrompt = definePrompt({
+  name: "symptom-analysis",
+  input: { schema: SymptomAnalysisInputSchema },
+  output: { schema: SymptomAnalysisOutputSchema },
+  prompt: `You are a cautious medical assistant AI.
+Do not provide a diagnosis. Suggest only possible conditions. Be conservative and safe. If symptoms suggest emergency, set urgency to "high".
+Symptoms: {{symptoms}}
+Return:
+- summary
+- possibleConditions (top 3 with probability between 0–1)
+- urgency (low, medium, high)
+- riskScore (0–100)
+- recommendation`
+});
 
-export async function analyzeSymptoms(input: SymptomAnalysisInput): Promise<SymptomAnalysisOutput> {
-  return symptomAnalysisFlow(input);
+function checkEmergency(symptoms: string){
+  const keywords=["chest pain","difficulty breathing","shortness of breath","unconscious","severe bleeding","heart attack","stroke","seizure"];
+  return keywords.some(k=>symptoms.toLowerCase().includes(k));
 }
 
-const assessRiskLevel = ai.defineTool(
-    {
-        name: 'assessRiskLevel',
-        description: 'Assess the risk level of the patient based on the symptoms.',
-        inputSchema: z.object({
-            symptoms: z.string().describe('The symptoms described by the patient.'),
-            potentialConditions: z.string().describe('Potential medical conditions based on the symptoms.'),
-        }),
-        outputSchema: z.string().describe('The risk level associated with the symptoms (Low, Medium, High).'),
-    },
-    async (input) => {
-        // Implement logic to assess risk level based on symptoms and conditions
-        // This is a placeholder, replace with actual risk assessment logic
-        if (input.potentialConditions.includes('serious')) {
-            return 'High';
-        } else if (input.symptoms.includes('chest pain')) {
-            return 'Medium';
-        } else {
-            return 'Low';
-        }
-    }
-);
-
-const symptomAnalysisPrompt = ai.definePrompt({
-  name: 'symptomAnalysisPrompt',
-  input: {schema: SymptomAnalysisInputSchema},
-  output: {schema: SymptomAnalysisOutputSchema},
-  tools: [assessRiskLevel],
-  prompt: `You are an AI-powered chatbot designed to provide preliminary analysis of patient symptoms.
-
-  Analyze the following symptoms described by the patient:
-  {{symptoms}}
-
-  Based on these symptoms, provide a preliminary analysis, including potential medical conditions and recommended doctor specialties.  Include a risk assessment from the assessRiskLevel tool.
-
-  Be clear, concise, and provide general information. Do not provide medical advice.
-
-  Output the analysis, potential conditions, recommended specialties, and risk assessment.
-  `, 
-});
-
-const symptomAnalysisFlow = ai.defineFlow(
-  {
-    name: 'symptomAnalysisFlow',
-    inputSchema: SymptomAnalysisInputSchema,
-    outputSchema: SymptomAnalysisOutputSchema,
-  },
-  async input => {
-    const {output} = await symptomAnalysisPrompt(input);
-    return output!;
+export const analyzeSymptomsFlow=defineFlow({
+  name:"analyzeSymptoms",
+  inputSchema:SymptomAnalysisInputSchema,
+  outputSchema:SymptomAnalysisOutputSchema
+},async(input)=>{
+  if(checkEmergency(input.symptoms)){
+    return{
+      summary:"Potential medical emergency detected.",
+      possibleConditions:[],
+      urgency:"high",
+      riskScore:90,
+      recommendation:"Seek immediate medical attention or contact emergency services."
+    };
   }
-);
+  try{
+    const result=await symptomPrompt(input);
+    if(!result)throw new Error("No response");
+    return result;
+  }catch{
+    return{
+      summary:"Unable to process symptoms at the moment.",
+      possibleConditions:[],
+      urgency:"medium",
+      riskScore:50,
+      recommendation:"Please consult a healthcare professional for proper guidance."
+    };
+  }
+});

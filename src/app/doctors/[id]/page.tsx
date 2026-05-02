@@ -11,8 +11,7 @@ import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 const doctorImage = PlaceHolderImages.find(p => p.id === 'testimonial-1');
 const heroImage = PlaceHolderImages.find(p => p.id === 'hero-image');
 
-export default function DoctorProfilePage({ params }: { params: { id: string } }) {
-  // In a real app, you'd fetch doctor data based on params.id
+export default function DoctorProfilePage({ params }:{params: { id: string } }) {
   const doctor = {
     id: params.id,
     name: 'Dr. Priya Sharma',
@@ -23,11 +22,7 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
     reviews: 124,
     education: 'MD from All India Institute of Medical Sciences, Delhi',
     experience: 'Chief of Cardiology at Apollo Hospital, Mumbai',
-  };
-
-  return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
+  };return (<div className="flex flex-col min-h-screen"><Header />
       <main className="flex-grow bg-secondary/30 pb-12">
         <div className="relative h-48 bg-primary/20">
             {heroImage && <Image src={heroImage.imageUrl} alt="Abstract background" fill className="object-cover" data-ai-hint="abstract background"/>}

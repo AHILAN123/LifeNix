@@ -1,62 +1,80 @@
-'use server';
+import { z } from "zod";
+import { defineFlow, definePrompt } from "@genkit-ai/ai";
 
-/**
- * @fileOverview Applies OCR to a document, extracts the text, and provides insights.
- *
- * - analyzeDocument - A function that handles the document analysis process.
- * - AnalyzeDocumentInput - The input type for the analyzeDocument function.
- * - AnalyzeDocumentOutput - The return type for the analyzeDocument function.
- */
+const InputSchema=z.object({ fileData:z.string() });
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-
-const AnalyzeDocumentInputSchema = z.object({
-  documentDataUri: z
-    .string()
-    .describe(
-      'A medical document, as a data URI that must include a MIME type and use Base64 encoding. Expected format: \'data:<mimetype>;base64,<encoded_data>\'.'      
-    ),
+const OutputSchema=z.object({
+  extractedText:z.string(),
+  summary:z.string(),
+  keyFindings:z.array(z.string()),
+  riskLevel:z.enum(["low","medium","high"]),
+  recommendations:z.array(z.string())
 });
-export type AnalyzeDocumentInput = z.infer<typeof AnalyzeDocumentInputSchema>;
 
-const AnalyzeDocumentOutputSchema = z.object({
-  extractedText: z.string().describe('The extracted text from the document using OCR.'),
-  insights: z.string().describe('AI-generated insights from the extracted text.'),
+const ocrPrompt=definePrompt({
+  name:"ocr-extraction",
+  input:{schema:InputSchema},
+  output:{schema:z.object({text:z.string()})},
+  prompt:`Extract all readable text from this medical document accurately.
+{{media url=fileData}}`
 });
-export type AnalyzeDocumentOutput = z.infer<typeof AnalyzeDocumentOutputSchema>;
 
-export async function analyzeDocument(input: AnalyzeDocumentInput): Promise<AnalyzeDocumentOutput> {
-  return analyzeDocumentFlow(input);
+const insightPrompt=definePrompt({
+  name:"medical-insights",
+  input:{schema:z.object({text:z.string()})},
+  output:{schema:OutputSchema},
+  prompt:`You are a cautious medical assistant AI.
+Do not provide diagnosis. Analyze the text and extract useful medical insights.
+Text: {{text}}
+Return:
+- extractedText
+- summary
+- keyFindings (important observations)
+- riskLevel (low, medium, high)
+- recommendations`
+});
+
+function detectCritical(text:string){
+  const keywords=["critical","urgent","abnormal","high risk","severe","malignant","positive"];
+  return keywords.some(k=>text.toLowerCase().includes(k));
 }
 
-const ocrPrompt = ai.definePrompt({
-  name: 'ocrPrompt',
-  input: {schema: AnalyzeDocumentInputSchema},
-  output: {schema: z.object({extractedText: z.string()})},
-  prompt: `Extract all the text from the following document using OCR:
+export const documentOcrAndInsightsFlow=defineFlow({
+  name:"documentOcrAndInsights",
+  inputSchema:InputSchema,
+  outputSchema:OutputSchema
+},async(input)=>{
+  try{
+    const ocrResult=await ocrPrompt(input);
+    if(!ocrResult?.text)throw new Error("OCR failed");
 
-{{media url=documentDataUri}}`,
-});
+    const insights=await insightPrompt({text:ocrResult.text});
+    if(!insights)throw new Error("Insight failed");
 
-const insightsPrompt = ai.definePrompt({
-  name: 'insightsPrompt',
-  input: {schema: z.object({extractedText: z.string()})},
-  output: {schema: z.object({insights: z.string()})},
-  prompt: `You are an AI assistant designed to provide insights from medical documents.
-  Analyze the following text extracted from a medical document and provide a summary of the document, and highlight any important information. 
-  Text: {{{extractedText}}}`,
-});
+    if(detectCritical(ocrResult.text)){
+      return{
+        extractedText:ocrResult.text,
+        summary:"Potential critical findings detected in the document.",
+        keyFindings:insights.keyFindings||[],
+        riskLevel:"high",
+        recommendations:["Consult a doctor immediately","Seek professional medical evaluation"]
+      };
+    }
 
-const analyzeDocumentFlow = ai.defineFlow(
-  {
-    name: 'analyzeDocumentFlow',
-    inputSchema: AnalyzeDocumentInputSchema,
-    outputSchema: AnalyzeDocumentOutputSchema,
-  },
-  async input => {
-    const ocrResult = await ocrPrompt(input);
-    const insightsResult = await insightsPrompt({extractedText: ocrResult.output!.extractedText});
-    return {extractedText: ocrResult.output!.extractedText, insights: insightsResult.output!.insights};
+    return{
+      extractedText:ocrResult.text,
+      summary:insights.summary,
+      keyFindings:insights.keyFindings,
+      riskLevel:insights.riskLevel,
+      recommendations:insights.recommendations
+    };
+  }catch{
+    return{
+      extractedText:"",
+      summary:"Unable to process document at the moment.",
+      keyFindings:[],
+      riskLevel:"medium",
+      recommendations:["Please upload a clearer document or consult a professional"]
+    };
   }
-);
+});

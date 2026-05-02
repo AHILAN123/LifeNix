@@ -4,8 +4,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Bot } from 'lucide-react';
-
-// This would be a client component in a real application
 const SymptomCheckerForm = () => {
     return (
         <form className="space-y-4">
@@ -16,10 +14,7 @@ const SymptomCheckerForm = () => {
             <Button type="submit" className="w-full md:w-auto">Analyze Symptoms</Button>
         </form>
     );
-};
-
-// Placeholder for results display
-const AnalysisResults = () => {
+};const AnalysisResults = () => {
     return (
         <Card className="mt-8">
             <CardHeader>
@@ -58,20 +53,15 @@ export default function SymptomCheckerPage() {
                 <Bot className="h-12 w-12 mx-auto text-primary mb-4" />
                 <h1 className="text-4xl font-headline font-bold">AI Symptom Checker</h1>
                 <p className="text-lg text-muted-foreground mt-2">Get a quick insight into your health concerns.</p>
-            </div>
-            
-            <Card>
+            </div><Card>
                 <CardHeader>
                     <CardTitle className="font-headline">Describe Your Symptoms</CardTitle>
-                    <CardDescription>Our AI will provide a preliminary analysis. Please be as detailed as possible.</CardDescription>
+                    <CardDescription>AI will provide a preliminary analysis. Please be as detailed as possible.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <SymptomCheckerForm />
                 </CardContent>
             </Card>
-
-            {/* The results would be conditionally rendered after form submission in a real app */}
-            {/* <AnalysisResults /> */}
         </div>
       </main>
       <Footer />

@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label';
 const doctors = [
   {
     id: '1',
-    name: 'Dr. Priya Sharma',
+    name: 'xyz doctor rocking',
     specialty: 'Cardiologist',
     location: 'Mumbai, MH',
     image: PlaceHolderImages.find(p => p.id === 'testimonial-1'),

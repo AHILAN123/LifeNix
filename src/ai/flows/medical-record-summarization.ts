@@ -1,51 +1,63 @@
-'use server';
-/**
- * @fileOverview Summarizes medical records using AI.
- *
- * - summarizeMedicalRecord - A function that summarizes a medical record.
- * - MedicalRecordSummarizationInput - The input type for the summarizeMedicalRecord function.
- * - MedicalRecordSummarizationOutput - The return type for the summarizeMedicalRecord function.
- */
+import { z } from "zod";
+import { defineFlow, definePrompt } from "@genkit-ai/ai";
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+const InputSchema=z.object({ fileData:z.string() });
 
-const MedicalRecordSummarizationInputSchema = z.object({
-  recordDataUri: z
-    .string()
-    .describe(
-      "The medical record as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
-    ),
+const OutputSchema=z.object({
+  summary:z.string(),
+  conditions:z.array(z.string()),
+  medications:z.array(z.string()),
+  recommendations:z.array(z.string()),
+  riskLevel:z.enum(["low","medium","high"])
 });
-export type MedicalRecordSummarizationInput = z.infer<typeof MedicalRecordSummarizationInputSchema>;
 
-const MedicalRecordSummarizationOutputSchema = z.object({
-  summary: z.string().describe('A concise summary of the medical record.'),
+const summaryPrompt=definePrompt({
+  name:"medical-summary",
+  input:{schema:InputSchema},
+  output:{schema:OutputSchema},
+  prompt:`You are a cautious medical assistant AI.
+Do not provide diagnosis. Summarize the medical record and extract key information.
+{{media url=fileData}}
+Return:
+- summary
+- conditions
+- medications
+- recommendations
+- riskLevel (low, medium, high)`
 });
-export type MedicalRecordSummarizationOutput = z.infer<typeof MedicalRecordSummarizationOutputSchema>;
 
-export async function summarizeMedicalRecord(input: MedicalRecordSummarizationInput): Promise<MedicalRecordSummarizationOutput> {
-  return medicalRecordSummarizationFlow(input);
+function detectHighRisk(text:string){
+  const keywords=["cancer","tumor","critical","severe","high risk","positive","malignant"];
+  return keywords.some(k=>text.toLowerCase().includes(k));
 }
 
-const prompt = ai.definePrompt({
-  name: 'medicalRecordSummarizationPrompt',
-  input: {schema: MedicalRecordSummarizationInputSchema},
-  output: {schema: MedicalRecordSummarizationOutputSchema},
-  prompt: `You are a medical expert. Summarize the key information from the following medical record for a patient to quickly understand. Be concise and clear.
+export const medicalRecordSummarizationFlow=defineFlow({
+  name:"medicalRecordSummarization",
+  inputSchema:InputSchema,
+  outputSchema:OutputSchema
+},async(input)=>{
+  try{
+    const result=await summaryPrompt(input);
+    if(!result)throw new Error("No response");
 
-Medical Record:
-{{media url=recordDataUri}}`,
-});
+    if(detectHighRisk(JSON.stringify(result))){
+      return{
+        summary:result.summary,
+        conditions:result.conditions||[],
+        medications:result.medications||[],
+        recommendations:["Seek immediate medical consultation","Follow up with a specialist"],
+        riskLevel:"high"
+      };
+    }
 
-const medicalRecordSummarizationFlow = ai.defineFlow(
-  {
-    name: 'medicalRecordSummarizationFlow',
-    inputSchema: MedicalRecordSummarizationInputSchema,
-    outputSchema: MedicalRecordSummarizationOutputSchema,
-  },
-  async input => {
-    const {output} = await prompt(input);
-    return output!;
+    return result;
+  }catch{
+    return{
+      summary:"Unable to process medical record.",
+      conditions:[],
+      medications:[],
+      recommendations:["Please consult a healthcare professional"],
+      riskLevel:"medium"
+    };
   }
-);
+});

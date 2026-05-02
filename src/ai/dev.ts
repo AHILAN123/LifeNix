@@ -1,6 +1,13 @@
-import { config } from 'dotenv';
+import { config } from "dotenv";
+import { genkit } from "@genkit-ai/ai";
+import { googleAI } from "@genkit-ai/googleai";
+
 config();
 
-import '@/ai/flows/ai-symptom-analysis.ts';
-import '@/ai/flows/document-ocr-and-insights.ts';
-import '@/ai/flows/medical-record-summarization.ts';
+const apiKey=process.env.GOOGLE_API_KEY;
+if(!apiKey)throw new Error("Missing GOOGLE_API_KEY");
+
+export const ai=genkit({
+  plugins:[googleAI({apiKey})],
+  model:"googleai/gemini-2.5-flash"
+});

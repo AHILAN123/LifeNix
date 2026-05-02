@@ -7,7 +7,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Bot, Stethoscope, ShieldCheck, Pill, Truck } from 'lucide-react';
-
 const featureCards = [
   {
     icon: <Bot className="h-8 w-8 text-primary" />,
@@ -15,8 +14,7 @@ const featureCards = [
     description: 'Get a preliminary analysis of your symptoms with our intelligent AI.',
     link: '/symptom-checker',
     image: PlaceHolderImages.find(p => p.id === 'symptom-checker'),
-  },
-  {
+  },{
     icon: <Stethoscope className="h-8 w-8 text-primary" />,
     title: 'Find Doctors',
     description: 'Easily search for and book appointments with top specialists near you.',
@@ -105,8 +103,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        {/* Features Section */}
         <section id="features" className="py-20 md:py-28">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-12">
@@ -177,8 +173,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        {/* CTA Section */}
         <section className="py-20 md:py-28">
           <div className="container mx-auto px-4">
             <div className="bg-primary/20 rounded-lg p-12 text-center">
