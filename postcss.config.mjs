@@ -1,6 +1,5 @@
-/** @type {import('postcss-load-config').Config} */
-const config = {
-  plugins: {
+@type 
+const config = {plugins: {
     tailwindcss: {},
   },
 };
